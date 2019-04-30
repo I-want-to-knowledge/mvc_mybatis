@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:context="http://www.springframework.org/schema/context"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:mybatis/mysql.properties</value>
+                <!--多个文件的时候可以继续添加-->
+            </list>
+        </property>
+    </bean>
+
+    <!--自动扫描注解的bean-->
+    <context:component-scan base-package="com.jay.*"/>
+
+    <!--配置mysql数据库源-->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${driver}"/>
+        <property name="url" value="${url}"/>
+        <property name="username" value="${username}"/>
+        <property name="password" value="${password}"/>
+        <!--<property name="initialSize" value="1"/>
+        <property name="maxActive" value="100"/>
+        <property name="maxIdle" value="5"/>
+        <property name="maxWait" value="80000"/>-->
+    </bean>
+
+    <!--mybatis配置文件-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="mapperLocations" value="classpath:com/jay/dao/*Mapper.xml"/>
+        <property name="typeAliasesPackage" value="com.jay.entities"/>
+    </bean>
+
+    <!--自动扫描所有的mapper.xml对应的接口文件-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.jay.dao"/>
+    </bean>
+
+    <!--<bean id="userStateMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+        <property name="mapperInterface" value="com.jay.dao.UserStateMapper"></property>
+    </bean>-->
+</beans>

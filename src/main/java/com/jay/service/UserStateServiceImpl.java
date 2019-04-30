@@ -33,4 +33,9 @@ public class UserStateServiceImpl implements UserStateService{
     public int updateByPrimaryKeySelective(UserState userState){
         return userStateMapper.updateByPrimaryKeySelective(userState);
     }
+
+    @Override
+    public List<UserState> find() {
+        return userStateMapper.find();
+    }
 }

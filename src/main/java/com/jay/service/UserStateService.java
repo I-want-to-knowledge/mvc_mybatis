@@ -11,4 +11,6 @@ public interface UserStateService{
     int insertList(List<UserState> userStates);
 
     int updateByPrimaryKeySelective(UserState userState);
+
+    List<UserState> find();
 }
